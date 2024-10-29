@@ -4,7 +4,7 @@ const postsContainer = document.getElementById('postsContainer');
 
 async function carregarPosts() {
     try {
-        const response = await fetch(baseUrl + '/get_posts');
+        const response = await fetch(`${baseUrl}?action=get_posts`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -47,7 +47,7 @@ postForm.addEventListener('submit', async function (event) {
         conteudo: document.getElementById('conteudo').value
     };
 
-    const response = await fetch(baseUrl + '/add_post', {
+    const response = await fetch(`${baseUrl}?action=add_post`, { 
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -77,7 +77,7 @@ function exibirPosts(posts) {
                     <h5 class="card-title">${post.titulo}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">${post.subtitulo}</h6>
                     <p class="card-text"><strong>Assunto:</strong> ${post.assunto}</p>
-                    <p class="card-text">${post.conteudo.slice(0, 100)}...</p>
+                    <p class="card-text">${post.conteudo.slice(0, 100)}...</p> 
                 </div>
             </div>
         `;
