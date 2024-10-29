@@ -1,4 +1,4 @@
-const baseUrl = window.location.origin;
+const baseUrl = 'https://gbrlsouza.github.io/Post/';
 const postForm = document.getElementById('postForm');
 const postsContainer = document.getElementById('postsContainer');
 
