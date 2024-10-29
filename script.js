@@ -1,4 +1,4 @@
-const baseUrl = 'http://127.0.0.1:5000';
+const baseUrl = 'https://gbrlsouza.github.io/Post/';
 const postForm = document.getElementById('postForm');
 const postsContainer = document.getElementById('postsContainer');
 
