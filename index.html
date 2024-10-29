@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gerenciador de Posts</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Adicionar Novo Post</h1>
+
+        <form id="postForm">
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título do Post</label>
+                <input type="text" class="form-control" id="titulo" required>
+            </div>
+            <div class="mb-3">
+                <label for="subtitulo" class="form-label">Subtítulo do Post</label>
+                <input type="text" class="form-control" id="subtitulo" required>
+            </div>
+            <div class="mb-3">
+                <label for="assunto" class="form-label">Assunto do Post</label>
+                <input type="text" class="form-control" id="assunto" required>
+            </div>
+            <div class="mb-3">
+                <label for="imagem" class="form-label">Imagem do Post (URL)</label>
+                <input type="text" class="form-control" id="imagem" required>
+            </div>
+            <div class="mb-3">
+                <label for="conteudo" class="form-label">Conteúdo do Post</label>
+                <textarea class="form-control" id="conteudo" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Post</button>
+        </form>
+
+        <div class="my-5">
+            <h2 class="text-center mb-4">Todos os Posts</h2>
+            <div id="postsContainer" class="row row-cols-1 row-cols-md-2 g-4">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const postForm = document.getElementById('postForm');
+        const postsContainer = document.getElementById('postsContainer');
+
+        async function carregarPosts() {
+            const response = await fetch('/get_posts');
+            const posts = await response.json();
+            exibirPosts(posts);
+        }
+
+        function exibirPosts(posts) {
+            postsContainer.innerHTML = '';
+            posts.forEach(post => {
+                const postCard = document.createElement('div');
+                postCard.classList.add('col');
+                postCard.innerHTML = `
+                <div class="card h-100">
+                    <img src="${post.imagem}" class="card-img-top" alt="Imagem do Post">
+                    <div class="card-body">
+                        <h5 class="card-title">${post.titulo}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${post.subtitulo}</h6>
+                        <p class="card-text"><strong>Assunto:</strong> ${post.assunto}</p>
+                        <p class="card-text">${post.conteudo}</p>
+                        <p class="card-text text-muted"><small>${post.data_hora}</small></p>
+                    </div>
+                </div>
+            `;
+                postsContainer.appendChild(postCard);
+            });
+        }
+
+        postForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const post = {
+                titulo: document.getElementById('titulo').value,
+                subtitulo: document.getElementById('subtitulo').value,
+                assunto: document.getElementById('assunto').value,
+                imagem: document.getElementById('imagem').value,
+                conteudo: document.getElementById('conteudo').value
+            };
+
+            const response = await fetch('/add_post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                
+                body: JSON.stringify(post)
+            });
+
+            if (response.ok) {
+                postForm.reset();
+                carregarPosts();
+            }
+        });
+
+        carregarPosts();
+    </script>
+</body>
+
+</html>
