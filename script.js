@@ -77,7 +77,7 @@ function exibirPosts(posts) {
                     <h5 class="card-title">${post.titulo}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">${post.subtitulo}</h6>
                     <p class="card-text"><strong>Assunto:</strong> ${post.assunto}</p>
-                    <p class="card-text">${post.conteudo.slice(0, 100)}...</p> <!-- Mostra uma prévia do conteúdo -->
+                    <p class="card-text">${post.conteudo.slice(0, 100)}...</p>
                 </div>
             </div>
         `;
@@ -97,4 +97,3 @@ function exibirPosts(posts) {
         postsContainer.appendChild(postCard);
     });
 }
-
